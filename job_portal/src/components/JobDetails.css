@@ -1,0 +1,18 @@
+.job-details {
+    padding: 20px;
+    text-align: left;
+}
+
+.job-details h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.job-details p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.job-details strong {
+    color: #333;
+}
