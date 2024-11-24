@@ -11,7 +11,13 @@ const Categories = () => {
 
   // Fetch categories on component mount
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/api/categories/")
+    const token = localStorage.getItem("access_token")
+    console.log(token)
+    fetch("http://127.0.0.1:8000/api/api/categories/", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -24,8 +24,9 @@ const Login = () => {
       if (response && response.access && response.refresh) {
         // Store the JWT token in localStorage
         localStorage.setItem('access_token', response.access); // Access token
-        localStorage.setItem('refresh_token', response.refresh); // Refresh token
-  
+        localStorage.setItem('refresh_token', response.refresh);
+        localStorage.setItem('username', response.user.username); // Store the username for future use
+        window.dispatchEvent(new Event('authChange'));
         // Redirect to the home page or any protected route
         navigate('/'); 
       } else {

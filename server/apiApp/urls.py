@@ -38,5 +38,5 @@ urlpatterns = [
     path('api/jobs/<int:job_id>/apply/', apply_for_job, name='apply_for_job'),
 
     # Profile view and update endpoint
-    path('api/profile/', profile_view, name='profile_view'),
+    path('api/profile/', profile_view, name='profile_view'),    
 ]

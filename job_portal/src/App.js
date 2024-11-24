@@ -15,11 +15,12 @@ import PostJob from "./components/PostJob";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { registerUser } from "./services/api";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   // State for handling signup success/error
   const [signupStatus, setSignupStatus] = useState(null);
-
+  const token = localStorage.getItem('access_token');
   // Handle signup functionality
   const handleSignup = async (userData) => {
     try {
@@ -54,8 +55,8 @@ function App() {
         {/* Define Routes */}
         <Routes>
           {/* Home and Category Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/categories" element={<CategoryList />} />
+          <Route path="/" element={<PrivateRoute element={Home} />} />
+          <Route path="/categories" element={<PrivateRoute element={CategoryList} />} />
 
           {/* Job Listing and Application Routes */}
           <Route path="/jobs" element={<JobListingPage />} /> {/* Job Listing Page */}

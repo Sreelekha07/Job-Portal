@@ -113,7 +113,8 @@ def manage_categories(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-        if not request.user.is_staff:  # Only admins or staff can create categories
+        print(request.user)
+        if not request.user:  # Only admins or staff can create categories
             return Response({'error': 'You are not authorized to create categories.'}, status=403)
 
         data = request.data
@@ -187,7 +188,8 @@ def register_view(request):
         'user': {
             'id': user.id,
             'username': user.username,
-            'email': user.email,
+            'email': user.email,    
+            'user_type': user.profile.user_type,
         },
     }, status=status.HTTP_201_CREATED)
 
