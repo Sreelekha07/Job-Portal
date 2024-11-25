@@ -31,6 +31,7 @@ def get_jobs_by_category(request):
 @permission_classes([IsAuthenticated])
 def create_job(request):
     user = request.user
+    print(user)
     if user.profile.user_type != 'employer':  # Ensure only employers can create jobs
         return Response({'error': 'You are not authorized to post jobs.'}, status=403)
 

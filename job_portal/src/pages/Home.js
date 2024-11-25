@@ -1,18 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchJobs } from '../services/api'; // Import the fetchJobs function from api.js
 import './Home.css';
+import JobCreationForm from '../components/JobCreationForm';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [jobList, setJobList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [error, setError] = useState('');
+  const user_type = localStorage.getItem('user_type');
+  // const user_type = "employer";
 
   // Function to handle search input change
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+    setSearchQuery(query);
+    filterJobs(query);
   };
 
+  const filterJobs = (query) => {
+    const filtered = jobList.filter(job => 
+      job.title.toLowerCase().includes(query.toLowerCase()) ||
+      job.description.toLowerCase().includes(query.toLowerCase()) ||
+      job.location.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredJobs(filtered);
+  };
+
+  useEffect(() => {
+    const fetchAndSetJobs = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const jobs = await fetchJobs(''); // Fetch all jobs initially
+        setJobList(jobs); // Update jobList with the fetched data
+        setFilteredJobs(jobs); // Initialize filteredJobs with all jobs
+      } catch (error) {
+        setError('Error fetching jobs. Please try again later.');
+        console.error("Error fetching jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAndSetJobs();
+  }, []);
   // Function to fetch job listings based on search query
   const handleSearch = async () => {
     setLoading(true);
@@ -28,6 +61,14 @@ const Home = () => {
     }
   };
 
+  if (user_type === 'employer') {
+    return (
+      <div className="home-container">
+        <h2>Welcome to the Job Portal</h2>
+        <JobCreationForm />
+      </div>)
+  }
+
   return (
     <div className="home-container">
       <header className="home-header">
@@ -40,7 +81,6 @@ const Home = () => {
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <button onClick={handleSearch}>Search</button>
         </div>
       </header>
 
@@ -48,12 +88,12 @@ const Home = () => {
         <h3>Featured Jobs</h3>
         {loading && <p>Loading jobs...</p>}
         {error && <p>{error}</p>}
-        {jobList.length > 0 ? (
-          jobList.map((job) => (
+        {filteredJobs.length > 0 ? (
+          filteredJobs.map((job) => (
             <div className="job-card" key={job.id}>
               <h4>{job.title}</h4>
               <p>{job.company} - {job.location}</p>
-              <button onClick={() => window.location.href = `/categories/${job.category_id}/jobs/${job.id}`}>Apply Now</button>
+              <button onClick={() => window.location.href = `/job/${job.id}`}>Apply Now</button>
             </div>
           ))
         ) : (

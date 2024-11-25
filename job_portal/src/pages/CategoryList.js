@@ -41,6 +41,7 @@ const Categories = () => {
       fetchJobsByCategory(selectedCategory) // Call the API service function to fetch jobs by category
         .then((data) => {
           setJobs(data);
+          console.log(data)
           setLoading(false); // Reset loading state after fetching
         })
         .catch((error) => {

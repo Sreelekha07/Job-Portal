@@ -20,7 +20,6 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   // State for handling signup success/error
   const [signupStatus, setSignupStatus] = useState(null);
-  const token = localStorage.getItem('access_token');
   // Handle signup functionality
   const handleSignup = async (userData) => {
     try {
@@ -69,9 +68,7 @@ function App() {
           <Route path="/signup" element={<Signup onSignup={handleSignup} />} /> {/* Signup */}
           <Route path="/login" element={<Login />} /> {/* Login */}
 
-          {/* Job Routes */}
-          <Route path="/post-job" element={<PostJob />} /> {/* Post Job Page */}
-          <Route path="/categories/:id/jobs/:jobId" element={<JobDetails />} /> {/* Job Details */}
+          <Route path="/job/:jobId" element={<JobDetails />} /> {/* Job Details */}
 
           {/* Additional Pages */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
